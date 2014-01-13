@@ -16,7 +16,7 @@ class ParrotZik(object):
 
 
 		if sys.platform == "darwin":
-			service_matches = lightblue.findservices( name = "RFCOMM", addr = addr )
+			service_matches = lightblue.findservices( servicetype = lightblue.RFCOMM, addr = addr )
 		else:
 			service_matches = bluetooth.find_service( uuid = uuid, address = addr )		
 
@@ -26,16 +26,19 @@ class ParrotZik(object):
 		    return
 
 		first_match = service_matches[0]
-		port = first_match["port"]
-		name = first_match["name"]
-		host = first_match["host"]
-
-		print "Connecting to \"%s\" on %s" % (name, host)
 
 		if sys.platform == "darwin":
-			self.sock=lightblue.lightblueSocket( lightblue.RFCOMM )
+			port = first_match[1]
+			name = first_match[2]
+			host = first_match[0]
+			self.sock=lightblue.socket( lightblue.RFCOMM )
 		else:
+			port = first_match["port"]
+			name = first_match["name"]
+			host = first_match["host"]
 			self.sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
+
+		print "Connecting to \"%s\" on %s" % (name, host)
 
 		self.sock.connect((host, port))
 

@@ -3,7 +3,7 @@
 import sys
 import re
 import os
-import ParrotZikMac
+import ParrotZik
 import rumps
 from binplist import binplist
 import BluetoothPairedDevices
@@ -210,5 +210,5 @@ class ParrotZikIndicator:
 
 if __name__ == "__main__":
     indicator = ParrotZikIndicator()
-    indicator.EstablishConnection()
-    indicator.app.run()
+    if indicator.EstablishConnection():
+      indicator.app.run()
